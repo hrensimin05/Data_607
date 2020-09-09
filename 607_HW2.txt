@@ -1,0 +1,56 @@
+SQL> CREATE TABLE movies
+  2  (
+  3  id int PRIMARY KEY,
+  4  title varchar(100) NOT NULL
+  5  );
+
+INSERT INTO movies(id,title) VALUES (1,'Good Girls');
+INSERT INTO movies(id,title) VALUES (2,'Bad Santa');
+INSERT INTO movies(id,title) VALUES (3,'Bad Boys');
+INSERT INTO movies(id,title) VALUES (4,'Smile');
+INSERT INTO movies(id,title) VALUES (5,'Hangover');
+INSERT INTO movies(id,title) VALUES (6,'Notebook');
+
+CREATE TABLE ratings
+(
+id int PRIMARY KEY,
+movie_id int,
+user_name varchar(50),
+rating_score int
+);
+
+INSERT INTO ratings(id,movie_id,user_name,rating_score) VALUES (1,1,'Barb',5);
+INSERT INTO ratings(id,movie_id,user_name,rating_score) VALUES (2,2,'Barb',4);
+INSERT INTO ratings(id,movie_id,user_name,rating_score) VALUES (3,4,'Barb',2);
+INSERT INTO ratings(id,movie_id,user_name,rating_score) VALUES (4,6,'Barb',1);
+INSERT INTO ratings(id,movie_id,user_name,rating_score) VALUES (5,1,'Kyle',2);
+INSERT INTO ratings(id,movie_id,user_name,rating_score) VALUES (6,2,'Kyle',4);
+INSERT INTO ratings(id,movie_id,user_name,rating_score) VALUES (7,3,'Kyle',4);
+INSERT INTO ratings(id,movie_id,user_name,rating_score) VALUES (8,4,'Kyle',5);
+INSERT INTO ratings(id,movie_id,user_name,rating_score) VALUES (9,5,'Kyle',1);
+INSERT INTO ratings(id,movie_id,user_name,rating_score) VALUES (10,6,'Kyle',1);
+INSERT INTO ratings(id,movie_id,user_name,rating_score) VALUES (11,2,'Vic',1);
+INSERT INTO ratings(id,movie_id,user_name,rating_score) VALUES (12,3,'Vic',3);
+INSERT INTO ratings(id,movie_id,user_name,rating_score) VALUES (13,6,'Vic',5);
+INSERT INTO ratings(id,movie_id,user_name,rating_score) VALUES (14,1,'Bob', 5);
+INSERT INTO ratings(id,movie_id,user_name,rating_score) VALUES (15,2,'Bob', 1);
+INSERT INTO ratings(id,movie_id,user_name,rating_score) VALUES (16,3,'Bob', 3);
+INSERT INTO ratings(id,movie_id,user_name,rating_score) VALUES (17,4,'Bob', 5);
+INSERT INTO ratings(id,movie_id,user_name,rating_score) VALUES (18,6,'Bob', 4);
+INSERT INTO ratings(id,movie_id,user_name,rating_score) VALUES (19,3,'Lola',1);
+INSERT INTO ratings(id,movie_id,user_name,rating_score) VALUES (20,1,'Mila',1);
+INSERT INTO ratings(id,movie_id,user_name,rating_score) VALUES (21,2,'Mila',3);
+INSERT INTO ratings(id,movie_id,user_name,rating_score) VALUES (22,3,'Mila',2);
+INSERT INTO ratings(id,movie_id,user_name,rating_score) VALUES (23,5,'Mila',3);
+INSERT INTO ratings(id,movie_id,user_name,rating_score) VALUES (24,6,'Mila',5);
+
+
+
+
+
+
+
+
+
+
+
