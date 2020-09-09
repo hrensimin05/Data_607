@@ -1,0 +1,66 @@
+---
+title: "Data607_Hw2"
+author: "Dominika Markowska-Desvallons"
+date: "9/9/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(DBI)
+library(RMySQL)
+library(getPass)
+## Loading packages and mydb
+mydb = dbConnect(MySQL(), user=getPass(msg = 'Enter username'), password= getPass('Enter Password'), dbname='mydb')
+```
+
+
+##List of Movies
+```{r}
+movies <- dbSendQuery(mydb, "SELECT * FROM movies")
+dbFetch(movies)
+```
+
+##List of Movies' RATINGS
+```{r}
+ratings <- dbSendQuery(mydb, "SELECT * FROM ratings")
+dbFetch(ratings)
+
+
+```
+
+
+
+
+
+
+##Ratings by title  and participant
+```{r}
+movie_ratings <- dbSendQuery(mydb, "SELECT 
+                              m.title,
+                              r.user_name,
+                              r.rating_score
+                             FROM movies m 
+                             RIGHT JOIN ratings r
+                             on m.id = r.movie_id
+                             ORDER BY m.title;")
+dbFetch(movie_ratings)
+```
+
+##Summary of rating by title
+```{r}
+movie_ratings <- dbSendQuery(mydb, "SELECT
+    m.title,
+    SUM(r.rating_score) 
+FROM movies m
+  RIGHT JOIN   ratings r
+  on m.id = r.movie_id
+GROUP BY
+    m.title ;")
+
+
+
+dbFetch(movie_ratings)
+```
+
+##Conclusion
+We can conclude from the survey that the highest score receive movie called "Notebook".
