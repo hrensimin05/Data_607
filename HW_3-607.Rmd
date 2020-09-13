@@ -1,0 +1,68 @@
+---
+title: "HW_3"
+author: "Dominika Markowska-Desvallons"
+date: "9/12/2020"
+output: html_document
+---
+#1. Using the 173 majors listed in fivethirtyeight.com’s College Majors dataset [https://fivethirtyeight.com/features/the-economic-guide-to-picking-a-college-major/], provide code that identifies the majors that contain either "DATA" or "STATISTICS" 
+```{r}
+url  <- "https://raw.githubusercontent.com/fivethirtyeight/data/master/college-majors/majors-list.csv"
+majors <- read.csv(paste0(url), header = TRUE)
+#head(majors)
+
+df <- data.frame(majors)
+majors_list <- subset(df, grepl("DATA", Major) | grepl("STATISTICS", Major))
+
+majors_list
+```
+#2 Write code that transforms the data below:
+
+[1] "bell pepper"  "bilberry"     "blackberry"   "blood orange"
+
+[5] "blueberry"    "cantaloupe"   "chili pepper" "cloudberry"  
+
+[9] "elderberry"   "lime"         "lychee"       "mulberry"    
+
+[13] "olive"        "salal berry"
+
+Into a format like this:
+
+c("bell pepper", "bilberry", "blackberry", "blood orange", "blueberry", "cantaloupe", "chili pepper", "cloudberry", "elderberry", "lime", "lychee", "mulberry", "olive", "salal berry")
+```{r}
+library(stringr)
+
+fruits<- c("bell pepper","bilberry", "blackberry" ,"blood orange",
+"blueberry", "cantaloupe","chili pepper","cloudberry",  
+"elderberry","lime", "lychee", "mulberry","olive" ,"salal berry")
+
+
+fruits_l <- writeLines(str_c(dQuote(fruits),collapse =","))
+
+```
+
+#3 Describe, in words, what these expressions will match:
+
+(.)\1\1 --it matches the same character appearing three times in a row. 
+"(.)(.)\\2\\1" --it matches a pair of characters followed by the same pair of characters in reversed order. 
+(..)\1 - - Looks for any two characters repeated. 
+"(.).\\1.\\1" -- Looks for a character followed by any character, the original character, any other character, the original character again.ex. 'abata'
+"(.)(.)(.).*\\3\\2\\1"` --- Looks for three characters followed by zero or more characters of any kind followed by the same three characters but in reverse order.
+
+#4 Construct regular expressions to match words that:
+
+Start and end with the same character.
+```{r}
+str_view(c("lol","kayak","doll"),"(.).*\\1")
+```
+Contain a repeated pair of letters (e.g. "church" contains "ch" repeated twice.)
+```{r}
+
+str_view(c("church","choclate","chacha"),"(..).*\\1")
+```
+Contain one letter repeated in at least three places (e.g. "eleven" contains three "e"s.)
+
+```{r}
+
+str_view(c("eleven","banana","apple","aparat"),"(.).*\\1.*\\1")
+```
+
