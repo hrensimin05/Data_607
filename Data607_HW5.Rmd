@@ -1,0 +1,112 @@
+---
+title: "Data607_HW5"
+author: "Dominika Markowska-Desvallons"
+date: "9/26/2020"
+output: html_document
+---
+## Homework 5
+
+```{r setup, include=FALSE}
+library(tidyr)
+library(dplyr)
+```
+
+
+```{r}
+# loading csv from github repository
+
+db <- "https://raw.githubusercontent.com/hrensimin05/Data_607/master/flights.csv"
+flights <- read.csv(db)
+flights
+```
+
+
+
+```{r}
+# tidying operantions by renaming colomns, filter the empty row, collecting all the data and performing calculation to compare arrivals and departure by destination 
+flights <-   flights %>%
+                rename(airlines = X, arrival_status = X.1) %>%  
+                filter(arrival_status != "") %>%
+                mutate(
+                    airlines  = ifelse(airlines == "", lag(airlines),airlines),
+                    arrival_status = ifelse(arrival_status == "on time", "on_time", arrival_status)
+                    ) %>%
+                gather("CITY", "num", Los.Angeles : Seattle) %>%
+                spread(arrival_status, num) %>%
+                mutate(
+                    total = delayed + on_time,
+                    num_on_time = round(on_time / total,4),
+                    num_delayed = round(delayed / total,4)
+                )
+    
+flights
+```
+
+```{r}
+# Graph and table of proportion of delayed flights 
+flights.redux <- flights %>%
+                    select(c(airlines,CITY, num_delayed)) %>%
+                    spread(CITY, num_delayed) %>%
+                    select(Los.Angeles:Seattle) %>%
+                    as.matrix()
+rownames(flights.redux) <- unique(flights$airlines)
+flights.redux
+barplot(flights.redux, beside = TRUE, main = "Ration of Delayed Flights", xlab = "DESTINATION", col=c("orange","red"))          
+legend("topleft", rownames(flights.redux), pch = 15, bty = 'n', col = c("orange","red"))
+```
+  
+  
+
+```{r}
+#table and bar graph plot summarizing ratio of all delayed flights by carrier for all cities combined
+
+combined_cities <- flights %>%
+                    group_by(airlines) %>%
+                    summarise(num_delayed = sum(delayed)/sum(total),.groups = 'drop') %>%
+                    select(num_delayed) %>%
+                    as.matrix()
+rownames(combined_cities) <- unique(flights$airlines)
+combined_cities
+barplot(combined_cities, beside = TRUE, main = "Ratio of Delayed Flights", xlab = "Cities Together", col=c("orange","yellow"), ylim = c(0,0.22))      
+legend("topleft", rownames(combined_cities), pch = 15,  bty = 'n', col = c("orange","yellow"))
+
+```
+
+```{r}
+# using function `prop` to examine if the difference in ratios above is statistically meaningful at the 5% level of significance.
+
+for (i in unique(flights$CITY)){ 
+    flights_db <- filter(flights, CITY == i)
+    AM_delayed <- sum(select(filter(flights_db, airlines == 'AM WEST'),delayed))
+    Alaska_delayed <- sum(select(filter(flights_db, airlines =='ALASKA'), delayed))
+    total_AM <- sum(select(filter(flights_db, airlines == 'AM WEST'),total))
+    total_Alaska <- sum(select(filter(flights_db, airlines == 'ALASKA'),total))
+    print("--------------------------------------------------------------------")
+    cat("TEST FOR:", i)
+    print(prop.test(c(AM_delayed,Alaska_delayed), c(total_AM,total_Alaska)))
+}
+
+```
+A significance level of 0.05 indicates a 5% risk of concluding that a difference exists when there is no actual difference.
+That is why  we reject the null hypothesis of equal delay proportions for San Diego, San Francisco and Seattle.
+And We fail to reject the null hypothesis for the following cities for LA and Phoenix.  
+
+
+```{r}
+# Repeating 'prop' function again
+db2 <- flights %>%
+                    group_by(airlines) %>%
+                    summarise(
+                        delayed = sum(delayed),
+                        total = sum(total),
+                        .groups = 'drop'
+                        )
+Am_delay <- sum(select(filter(db2, airlines == 'AM WEST'),delayed))
+Alaska_delay <- sum(select(filter(db2, airlines =='ALASKA'), delayed))
+totalAM <- sum(select(filter(db2, airlines == 'AM WEST'),total))
+totalAlaska <- sum(select(filter(db2, airlines == 'ALASKA'),total))
+print(prop.test(c(Am_delay,Alaska_delay), c(totalAM,totalAlaska)))
+
+
+#At the 5% level of significance, we reject the null hypothesis that the difference in proportions is ZERO. 
+```
