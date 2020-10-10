@@ -2,13 +2,13 @@
 {
 	"books":[
 	{
-	   "id": "1",
+	   "id": 1,
 	   "title":"Innumeracy : mathematical illiteracy and its consequences", 
 	   "author":"John Paulos", 
 	    "isbn":"978-0809058402", 
 	},
 	{
-	    "id":"2",
+	    "id":2,
 	    "title":"The Rosie Project", 
 	    "author":"Graeme Simsion", 
 	    "isbn":"978-1476729091", 
