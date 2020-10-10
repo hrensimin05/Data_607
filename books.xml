@@ -1,23 +1,21 @@
 <?xml version='1.0'>
-
-
 <books>
-<book>
-<id>1</id>
-<title>Innumeracy : mathematical illiteracy and its consequences</title>
-<author>John Paulos</author>
-<isbn>0809058405</isbn>
-</book>
-<book>
-<id>2</id>
-<title>The Rosie Project</title>
-<author>Graeme Simsion</author>
-<isbn>1476729093</isbn>
-</book>
-<book>
-<id>3</id>
-<title>Is Everyone Hanging Out Without Me? (And Other Concerns)</title>
-<author>Mindy Kaling</author>
-<isbn>0307886271</isbn>
-</book>
+    <book>
+        <id>1</id>
+        <title>Innumeracy : mathematical illiteracy and its consequences</title>
+       <author>John Paulos</author>
+        <isbn>0809058405</isbn>
+    </book>
+    <book>
+        <id>2</id>
+        <title>The Rosie Project</title>
+        <author>Graeme Simsion</author>
+        <isbn>1476729093</isbn>
+    </book>
+    <book>
+         <id>3</id>
+         <title>Is Everyone Hanging Out Without Me? (And Other Concerns)</title>
+        <author>Mindy Kaling</author>
+        <isbn>0307886271</isbn>
+    </book>
 </books>
