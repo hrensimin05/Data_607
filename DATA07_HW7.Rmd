@@ -1,0 +1,60 @@
+---
+title: "Data607- HW7"
+author: "Dominika Markowska-Desvallons"
+date: "10/10/2020"
+output:
+  html_document: default
+  pdf_document: default
+---
+##  Assignment – Working with XML and JSON in R
+
+```{r}
+library(dplyr)
+library(RCurl)
+library(tidyverse)
+library(XML)
+library(knitr)
+library(rjson)
+library(plyr)
+```
+
+
+## JSON
+
+```{r}
+library(jsonlite)
+books_json <- fromJSON("https://raw.githubusercontent.com/hrensimin05/Data_607/master/books.json")
+```
+
+```{r}
+books_json <- bind_rows(books_json, .id = 'Author')
+books_json
+```
+
+## HTML
+```{r}
+books_df <- readHTMLTable(
+    getURL("https://raw.githubusercontent.com/hrensimin05/Data_607/master/books.htm"), header = TRUE, which = 1)
+
+class(books_df)
+knitr::kable(books_df)
+```
+## XML
+```{r}
+books2 <- ldply(xmlToList(getURL("https://raw.githubusercontent.com/hrensimin05/Data_607/master/books.xml")), data.frame) %>%
+    select(-.id)
+
+class(books2)
+
+knitr::kable(books2)
+```
+## Conclusion 
+
+All three files are storing information slightly differently.
+HTML and Xml data frames are the same , but the json data frame, which was the most difficult for me to implement, transform the data into raws, but I also created the json file a bit differently compare to xml and html. 
+
+```{r}
+#xml==html
+books_df == books2
+
+```
