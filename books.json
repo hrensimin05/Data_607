@@ -4,18 +4,18 @@
 		"id": "1",
 		"title":"Innumeracy : mathematical illiteracy and its consequences", 
 		"author": "John Paulos", 
-		"isbn":0809058405, 
+		"isbn":"0809058405", 
 	},
 	{
 		"id": "2",
 		"title":"The Rosie Project", 
 		"author": "Graeme Simsion", 
-		"isbn":1476729093, 
+		"isbn":"1476729093", 
 	},
 	{
 		"id": "3",
 		"title":"Is Everyone Hanging Out Without Me? (And Other Concerns)", 
 		"author": "Mindy Kaling", 
-		"isbn":0307886271, 
+		"isbn":"0307886271", 
 	}]
 }
