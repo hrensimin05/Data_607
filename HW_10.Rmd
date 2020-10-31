@@ -1,0 +1,165 @@
+---
+title: "HW10"
+author: "Dominika Markowska-Desvallons"
+date: "10/30/2020"
+output: html_document
+---
+### Assigment 10 
+
+In this assignment, you should start by getting the primary example code from chapter 2 working in an R Markdown document.  You should provide a citation to this base code.  You’re then asked to extend the code in two ways:
+
+- Work with a different corpus of your choosing, and
+
+- Incorporate at least one additional sentiment lexicon (possibly from another R package that you’ve found through research).
+
+
+
+## Setting up the example code from ‘Text Mining with R’ Chapter 2.
+
+  “2 Sentiment Analysis with Tidy Data.” Text Mining with R: a Tidy Approach, by Julia Silge and David Robinson, O’Reilly Media, 2017.
+  https://www.tidytextmining.com/sentiment.html
+```{r}
+library(tidyverse)
+library(tidytext)
+library(dplyr)
+get_sentiments("afinn")
+get_sentiments("bing")
+get_sentiments("nrc")
+```
+
+
+
+```{r}
+
+library(janeaustenr)
+library(dplyr)
+
+
+library(stringr)
+
+tidy_books <- austen_books() %>%
+  group_by(book) %>%
+  mutate(
+    linenumber = row_number(),
+    chapter = cumsum(str_detect(text, regex("^chapter [\\divxlc]",
+      ignore_case = TRUE
+    )))
+  ) %>%
+  ungroup() %>%
+  unnest_tokens(word, text)
+
+nrc_joy <- get_sentiments("nrc") %>%
+  filter(sentiment == "joy")
+
+tidy_books %>%
+  filter(book == "Emma") %>%
+  inner_join(nrc_joy) %>%
+  count(word, sort = TRUE)
+  
+```
+## Setting up New Corpus - .
+
+we will use the function gutenberg_metadata from the package gutenbergr to check the id of the books we are interested in analyzing.
+
+
+```{r}
+library(gutenbergr)
+gutenberg_metadata %>%
+  filter(title == "Crime and Punishment")
+
+
+```
+
+ “Crime and Punishment” is 2554 for the English version.
+
+
+```{r}
+crime_punishment <- gutenberg_download(2554)
+glimpse(crime_punishment)
+
+
+```
+
+# Tydying book
+
+```{r}
+
+tydying_crime_punishment <- crime_punishment %>%
+  slice(-c(1:102)) %>%
+  mutate(line_num = row_number(),
+         part = cumsum(str_detect(text, regex("^PART [\\divxlc]",
+                                                  ignore_case = TRUE)))) %>%  
+         group_by(part) %>%
+         mutate(chapter = cumsum(str_detect(text, regex("^CHAPTER [\\divxlc]",
+                                                          ignore_case = TRUE)))) %>% 
+         ungroup()
+
+glimpse(tydying_crime_punishment)
+```
+creating a new column where each row has only one word
+
+
+```{r}
+
+Book <- tydying_crime_punishment %>% 
+  unnest_tokens(word, text) %>%
+  mutate(word = str_replace(word, "_", ""))
+
+
+#now removing stop words said
+Text_CP <- Book %>%
+  anti_join(stop_words, by = "word")
+```
+
+### Analyzing Word Frequency
+
+```{r}
+Text_CP%>%
+  count(word, sort = TRUE) %>%
+  top_n(10, n) %>%
+  ggplot(aes(x = fct_reorder(word, n), y = n, fill = word)) +
+  geom_col(show.legend = FALSE) +
+  scale_fill_viridis_d(option = "viridis") +
+  coord_flip() +
+  xlab(NULL) +
+  labs(title = "Crime and Punishment- Word Frequency") +
+  theme_minimal()
+```
+
+The most used word more is  the name of the main character, Raskolnikov.
+
+
+### Sentiment Analysis using nrc
+```{r}
+Text_CP %>%
+  inner_join(get_sentiments("nrc")) %>%
+  count(index = line_num %/% 150, sentiment) %>% 
+  spread(sentiment, n, fill = 0) %>%
+  mutate(sentiment = positive - negative) %>%
+  ggplot(aes(x = index, sentiment)) +
+  geom_col(fill = "red", show.legend = FALSE) +
+  labs(title = "Sentiment Analysis ") +
+  theme_minimal()
+```
+
+
+we can see that book has  more negative sentiment than positive one
+
+```{r}
+Text_CP %>%
+  inner_join(get_sentiments("nrc")) %>%
+  count(sentiment) %>%
+  mutate(total = sum(n),
+         prop = n / total) %>%
+  ggplot(aes(fct_reorder(sentiment, prop), y = prop, fill = sentiment)) +
+  geom_col(show.legend = FALSE) +
+  scale_fill_viridis_d(option = "viridis") +
+  xlab(NULL) +
+  ggtitle("Sentiment Analysis ") +
+  coord_flip() +
+  theme_minimal()
+```
+
+
+In conclusion, nrc package provides wider variety of words like negative and positive but as well other feeling assosiate with like joy and anger and so on. 
+
