@@ -1,0 +1,86 @@
+---
+title: "Data 607 - Discussion 11 "
+author: "Dominika Markowska-Desvallons"
+date: "11/4/2020"
+output: html_document
+---
+
+## Discussion 11 - Recommender Systems
+
+Task is to analyze an existing recommender system  by 
+
+-Perform a Scenario Design analysis
+-Attempt to reverse engineer what you can about the site, from the site interface 
+and any available information that you can find on the Internet or elsewhere
+-Include specific recommendations about how to improve the site's recommendation
+capabilities going forward
+
+### YouTube recommender system
+
+YouTube is the world’s largest platform for creating, sharing and watching  
+videos.YouTube’s recommender systems are run by Google Brain that was later
+opensourced by Google as TensorFlow. They  approached the problem using deep learning,
+where the idea  is that non-linear combinations of features may bring a better prediction 
+than a traditional matrix factorization system can.
+
+
+### Scenario Analysis
+
+- Who are the target users of the site?
+
+Beyond gender, YouTube has an age divide. It is mainstream enough to have a broad demographic 
+reach. Even the older people watch video, although not to the degree of millennials and GenX. 
+Overall, YouTube is the second most clicked webpage in US.
+
+- What are their key goals?
+
+To find a videos of their interest at the moment like favorite song, movie clip or TV show, 
+also to find a tutorial videos for any given problem they experiencing 
+
+- How can the site help the users accomplish their goals?
+
+YouTube  can help their users accomplish their goals by:
+- creating an easy to navigate interface where a customer can search and view videos easly and 
+without downloading the content
+- following users search history in order to recreate and add additional videos of similar content 
+and high approval rating from likes clicks
+- asking for user experience approval after the search or rather tracking it what did they like or did not like.
+
+## Recommendations to improve YouTube recommender system
+
+YouTube is using a  Deep Learning approach towards Recommender Systems  focused on two networks:
+-  the candidate generation network which is using the viewers' watching history and find some applicable videos to the user
+
+- the ranking network takes the highest approval rating for a videos and place them accordingly from the candidate generation 
+network, sometimes it causes too not be very relevant to the current search of the viewer. 
+
+As I mentioned above, the ranking network doesn't always shows relevant recommendations of the videos, which can be sometimes
+frustrating especially when there is no history of the user available to the recommender system, then basically the recommendations 
+are a lost to candidates, who is not interested in the high approval rating videos rather finding the most helpful video. 
+
+I would rather focus on fining relevant and the highest ranked videos to the user whose history is not relevant and not existing
+to the current search. Some recommendation can be really off and left user without any great choice. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
